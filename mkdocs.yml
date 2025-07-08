@@ -86,6 +86,7 @@ nav:
     - adr: 03-command-reference/adr.md
   - Advanced Guides:
     - Overview: 04-advanced-guides/README.md
+    - Documentation Websites: 04-advanced-guides/documentation-websites.md
     - MCP Server Setup: 04-advanced-guides/04-mcp-server-setup.md
   - AI Integration:
     - Overview: ai-integration/README.md
