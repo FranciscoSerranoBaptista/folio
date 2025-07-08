@@ -1,0 +1,175 @@
+name: Documentation Health Check
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    name: Documentation Health Check
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install folio-cli
+        run: npm install -g folio-cli || npm install -g .
+
+      - name: Run comprehensive documentation health check
+        run: |
+          echo "🏥 Running Documentation Health Check..."
+          echo "=================================="
+          
+          # Validate all documentation
+          echo "1. Validating document frontmatter..."
+          folio validate || echo "⚠️ Validation issues found"
+          
+          echo ""
+          echo "2. Checking document freshness..."
+          
+          # Find stale documents (not modified in 90 days)
+          STALE_DOCS=$(find docs -name "*.md" -type f -mtime +90 2>/dev/null || true)
+          if [ -n "$STALE_DOCS" ]; then
+            echo "📅 Documents not updated in 90+ days:"
+            echo "$STALE_DOCS" | while read doc; do
+              LAST_MODIFIED=$(date -r "$doc" "+%Y-%m-%d" 2>/dev/null || echo "unknown")
+              echo "  - $doc (last modified: $LAST_MODIFIED)"
+            done
+          else
+            echo "✅ All documents are recently updated"
+          fi
+          
+          echo ""
+          echo "3. Checking for orphaned documents..."
+          
+          # Look for documents that might not be linked anywhere
+          echo "🔍 Scanning for potentially orphaned documents..."
+          find docs -name "*.md" -not -name "README.md" -not -name "index.md" | while read doc; do
+            BASENAME=$(basename "$doc" .md)
+            # Simple check - look for references to this document
+            REFS=$(grep -r "$BASENAME" docs/ --include="*.md" 2>/dev/null | grep -v "$doc:" | wc -l || echo "0")
+            if [ "$REFS" -eq 0 ]; then
+              echo "  ⚠️ Potentially orphaned: $doc"
+            fi
+          done
+          
+          echo ""
+          echo "4. Checking document structure..."
+          
+          # Check for missing critical sections
+          echo "📋 Checking for standard document sections..."
+          
+          ADR_COUNT=0
+          ADR_WITH_STATUS=0
+          
+          if [ -d "docs/02-architecture-and-design/adr" ]; then
+            find docs/02-architecture-and-design/adr -name "*.md" -not -name "index.md" | while read adr; do
+              ADR_COUNT=$((ADR_COUNT + 1))
+              if grep -q "status:" "$adr" 2>/dev/null; then
+                ADR_WITH_STATUS=$((ADR_WITH_STATUS + 1))
+              else
+                echo "  ⚠️ ADR missing status: $adr"
+              fi
+            done
+          fi
+          
+          echo ""
+          echo "5. Documentation coverage report..."
+          
+          TOTAL_DOCS=$(find docs -name "*.md" -not -name "README.md" 2>/dev/null | wc -l || echo "0")
+          DOCS_WITH_FRONTMATTER=$(grep -l "^---" docs/**/*.md 2>/dev/null | wc -l || echo "0")
+          
+          echo "📊 Coverage Statistics:"
+          echo "  - Total documents: $TOTAL_DOCS"
+          echo "  - Documents with frontmatter: $DOCS_WITH_FRONTMATTER"
+          
+          if [ "$TOTAL_DOCS" -gt 0 ]; then
+            COVERAGE_PERCENT=$(( DOCS_WITH_FRONTMATTER * 100 / TOTAL_DOCS ))
+            echo "  - Frontmatter coverage: ${COVERAGE_PERCENT}%"
+            
+            if [ "$COVERAGE_PERCENT" -lt 80 ]; then
+              echo "  ⚠️ Low frontmatter coverage - consider adding metadata to more documents"
+            fi
+          fi
+
+      - name: Generate health report
+        run: |
+          echo "# 📋 Documentation Health Report" > health-report.md
+          echo "" >> health-report.md
+          echo "Generated on: $(date)" >> health-report.md
+          echo "" >> health-report.md
+          
+          echo "## Summary" >> health-report.md
+          echo "" >> health-report.md
+          
+          TOTAL=$(find docs -name "*.md" | wc -l)
+          echo "- **Total documents**: $TOTAL" >> health-report.md
+          
+          STALE_COUNT=$(find docs -name "*.md" -type f -mtime +90 2>/dev/null | wc -l || echo "0")
+          echo "- **Stale documents** (90+ days): $STALE_COUNT" >> health-report.md
+          
+          echo "" >> health-report.md
+          echo "## Recommendations" >> health-report.md
+          echo "" >> health-report.md
+          
+          if [ "$STALE_COUNT" -gt 0 ]; then
+            echo "- 📅 Review and update stale documents" >> health-report.md
+          fi
+          
+          echo "- 🔍 Ensure all ADRs have proper status metadata" >> health-report.md
+          echo "- 📝 Consider adding frontmatter to documents missing it" >> health-report.md
+          echo "- 🔗 Review orphaned documents for relevance" >> health-report.md
+          
+          echo "" >> health-report.md
+          echo "*Report generated automatically by folio-cli health check*" >> health-report.md
+
+      - name: Upload health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-health-report
+          path: health-report.md
+          retention-days: 30
+
+      - name: Create issue if problems found
+        if: ${{ env.HEALTH_ISSUES == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let issueBody = "## 🏥 Documentation Health Check Report\n\n";
+            issueBody += "The weekly documentation health check has found some issues that may need attention:\n\n";
+            
+            // Add specific issues found
+            issueBody += "### Issues Found:\n";
+            issueBody += "- Stale documents detected\n";
+            issueBody += "- Missing frontmatter in some documents\n";
+            issueBody += "- Potentially orphaned documents\n\n";
+            
+            issueBody += "### Recommended Actions:\n";
+            issueBody += "1. Review the health report artifact for details\n";
+            issueBody += "2. Update stale documentation\n";
+            issueBody += "3. Add proper frontmatter to documents\n";
+            issueBody += "4. Remove or link orphaned documents\n\n";
+            
+            issueBody += "*This issue was automatically created by the documentation health check workflow.*";
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📋 Documentation Health Check - ${new Date().toISOString().split('T')[0]}`,
+              body: issueBody,
+              labels: ['documentation', 'maintenance', 'automated']
+            });

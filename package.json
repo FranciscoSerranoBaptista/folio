@@ -1,0 +1,48 @@
+{
+    "name": "folio-cli",
+    "version": "1.0.0",
+    "description": "A modern CLI for managing structured Markdown documentation.",
+    "keywords": [
+        "cli",
+        "tool",
+        "devops"
+    ],
+    "license": "UNLICENSED",
+    "author": "Francisco Serrano Baptista",
+    "type": "commonjs",
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "bin": {
+        "folio": "dist/src/index.js"
+    },
+    "files": [
+        "dist",
+        "templates"
+    ],
+    "scripts": {
+        "build": "tsc && cp -r templates dist/",
+        "dev": "tsc --watch",
+        "typecheck": "tsc --noEmit",
+        "lint": "biome check src",
+        "lint:fix": "biome check --write src",
+        "format": "biome format src",
+        "format:write": "biome format --write src",
+        "check": "biome check src && npm run typecheck"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^2.1.0",
+        "@types/node": "^20.19.4",
+        "typescript": "^5.8.3"
+    },
+    "dependencies": {
+        "commander": "^14.0.0",
+        "cosmiconfig": "^9.0.0",
+        "cosmiconfig-typescript-loader": "^6.1.0",
+        "gray-matter": "^4.0.3",
+        "handlebars": "^4.7.8",
+        "inquirer": "^12.7.0",
+        "picocolors": "^1.1.1",
+        "vite": "^7.0.3",
+        "zod": "^3.25.75"
+    }
+}
