@@ -1,18 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
-// Mock all dependencies
-vi.mock('../../src/utils/config-loader');
-vi.mock('../../src/utils/files');
-vi.mock('../../src/utils/indexing');
-vi.mock('gray-matter');
-vi.mock('handlebars');
-
-describe('new command', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('should create createNewCommand function', async () => {
+describe('new command (simplified)', () => {
+  it('should create command with correct configuration', async () => {
     const { createNewCommand } = await import('../../src/commands/new');
     
     const command = createNewCommand();
@@ -39,51 +28,12 @@ describe('new command', () => {
     expect(options.some(opt => opt.long === '--sprint')).toBe(true);
   });
 
-  it('should handle document creation workflow', async () => {
-    // Mock the dependencies
-    const mockLoadConfig = vi.fn();
-    const mockGenerateSequentialFilename = vi.fn();
-    const mockReadTemplateFile = vi.fn();
-    const mockWriteDocFile = vi.fn();
-    const mockUpdateIndexFile = vi.fn();
-    const mockHandlebarsCompile = vi.fn();
-    const mockMatterStringify = vi.fn();
-
-    vi.mocked(await import('../../src/utils/config-loader')).loadConfig = mockLoadConfig;
-    vi.mocked(await import('../../src/utils/files')).generateSequentialFilename = mockGenerateSequentialFilename;
-    vi.mocked(await import('../../src/utils/files')).readTemplateFile = mockReadTemplateFile;
-    vi.mocked(await import('../../src/utils/files')).writeDocFile = mockWriteDocFile;
-    vi.mocked(await import('../../src/utils/indexing')).updateIndexFile = mockUpdateIndexFile;
-    vi.mocked(await import('handlebars')).compile = mockHandlebarsCompile;
-    vi.mocked(await import('gray-matter')).stringify = mockMatterStringify;
-
-    // Setup mocks
-    mockLoadConfig.mockResolvedValue({
-      config: {
-        root: 'docs',
-        types: {
-          adr: {
-            path: 'adrs',
-            template: 'adr.md',
-            frontmatter: {}
-          }
-        }
-      },
-      filepath: '/project/folio.config.ts'
-    });
-
-    mockGenerateSequentialFilename.mockResolvedValue('0001-test-adr.md');
-    mockReadTemplateFile.mockResolvedValue('# {{title}}\n\nContent here');
-    mockHandlebarsCompile.mockReturnValue(() => '# Test ADR\n\nContent here');
-    mockMatterStringify.mockReturnValue('---\nid: 1\ntitle: Test ADR\n---\n# Test ADR\n\nContent here');
-    mockWriteDocFile.mockResolvedValue('/project/docs/adrs/0001-test-adr.md');
-
-    // Test the workflow
+  it('should have action handler defined', async () => {
     const { createNewCommand } = await import('../../src/commands/new');
+    
     const command = createNewCommand();
     
-    // This tests that the command structure is correct
-    // Full integration testing would require more complex mocking
-    expect(command.name()).toBe('new');
+    expect(command._actionHandler).toBeDefined();
+    expect(typeof command._actionHandler).toBe('function');
   });
 });
