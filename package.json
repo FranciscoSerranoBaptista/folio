@@ -23,16 +23,23 @@
         "build": "tsc && cp -r templates dist/",
         "dev": "tsc --watch",
         "typecheck": "tsc --noEmit",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:ui": "vitest --ui",
+        "test:coverage": "vitest run --coverage",
         "lint": "biome check src",
         "lint:fix": "biome check --write src",
         "format": "biome format src",
         "format:write": "biome format --write src",
-        "check": "biome check src && npm run typecheck"
+        "check": "biome check src && npm run typecheck && npm run test:run"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.1.0",
         "@types/node": "^20.19.4",
-        "typescript": "^5.8.3"
+        "@vitest/coverage-v8": "^3.2.4",
+        "@vitest/ui": "^3.2.4",
+        "typescript": "^5.8.3",
+        "vitest": "^3.2.4"
     },
     "dependencies": {
         "commander": "^14.0.0",
