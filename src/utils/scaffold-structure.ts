@@ -128,7 +128,7 @@ export const structure: ScaffoldNode[] = [
             children: [
               {
                 type: "file",
-                name: "index.md",
+                name: "README.md",
                 content: "# Architecture Decision Records\n\n",
               },
             ],

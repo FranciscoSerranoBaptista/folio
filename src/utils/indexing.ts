@@ -79,13 +79,13 @@ export async function updateIndexFile(
   configDir: string,
 ): Promise<void> {
   const typeDir = path.join(configDir, config.root, docTypeConfig.path);
-  const indexPath = path.join(typeDir, "index.md");
+  const indexPath = path.join(typeDir, "README.md");
 
   // 1. Get all markdown files in the directory, excluding the index itself.
   const allFiles = await fs.readdir(typeDir).catch(() => []);
   const docFiles = allFiles.filter(
     (file) =>
-      (file.endsWith(".md") || file.endsWith(".mdx")) && file !== "index.md",
+      (file.endsWith(".md") || file.endsWith(".mdx")) && file !== "README.md",
   );
 
   // 2. Parse front matter from all document files concurrently.
@@ -140,7 +140,7 @@ export async function updateIndexFile(
       finalFileContent = `${existingContent.trim()}\n\n${fullNewContent}`;
     }
   } catch (error: unknown) {
-    // If index.md doesn't exist, create it from scratch.
+    // If README.md doesn't exist, create it from scratch.
     if (error instanceof Error && "code" in error && error.code === "ENOENT") {
       const title = docTypeConfig.path
         .replace(/[-_]/g, " ")
@@ -151,7 +151,7 @@ export async function updateIndexFile(
     }
   }
 
-  // 5. Write the updated content back to index.md.
+  // 5. Write the updated content back to README.md.
   await fs.writeFile(indexPath, finalFileContent);
   console.log(`✅ Updated index: ${path.relative(process.cwd(), indexPath)}`);
 }

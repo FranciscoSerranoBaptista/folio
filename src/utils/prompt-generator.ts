@@ -145,6 +145,12 @@ Your primary goal is to help with software development tasks by leveraging the p
 **PROJECT KNOWLEDGE OVERVIEW:**
 ${documentTypesList}
 
+**DOCUMENTATION STRUCTURE:**
+- Each directory contains a README.md file with an index of documents in that directory
+- The root docs/ directory has a comprehensive README.md with navigation and search capabilities
+- Templates are stored in docs/_templates/ for creating new documents
+- All indexes are automatically maintained by Folio CLI commands
+
 **YOUR REASONING PROCESS:**
 
 1. **Understand the Request:** Clarify what the user wants to accomplish.

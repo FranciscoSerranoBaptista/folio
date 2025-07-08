@@ -73,7 +73,7 @@ describe('files', () => {
       
       // Set up the file system with the template
       vol.fromJSON({
-        '/project/templates/adr.md': templateContent
+        '/project/docs/_templates/adr.md': templateContent
       });
 
       const result = await readTemplateFile('adr.md', '/project');
@@ -84,7 +84,7 @@ describe('files', () => {
       const { readTemplateFile } = await import('../../src/utils/files');
 
       await expect(readTemplateFile('missing.md', '/project')).rejects.toThrow(
-        "Template file not found at '/project/templates/missing.md'. Please make sure it exists."
+        "Template file not found at '/project/docs/_templates/missing.md'. Please make sure it exists."
       );
     });
 
@@ -92,7 +92,7 @@ describe('files', () => {
       const { readTemplateFile } = await import('../../src/utils/files');
 
       await expect(readTemplateFile('adr.md', '/nonexistent')).rejects.toThrow(
-        "Template file not found at '/nonexistent/templates/adr.md'. Please make sure it exists."
+        "Template file not found at '/nonexistent/docs/_templates/adr.md'. Please make sure it exists."
       );
     });
   });

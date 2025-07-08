@@ -51,8 +51,7 @@ async function searchDocuments(
           entry.isFile() &&
           (entry.name.endsWith(".md") || entry.name.endsWith(".mdx")) &&
           // Skip common non-document files
-          !entry.name.startsWith("README") &&
-          entry.name !== "index.md" &&
+          entry.name !== "README.md" &&
           entry.name !== "_templates"
         ) {
           try {

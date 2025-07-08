@@ -114,7 +114,7 @@ async function validateDocType(
     if (!file.endsWith(".md") && !file.endsWith(".mdx")) continue;
     
     // Skip common non-document files
-    if (file.startsWith("README") || file === "index.md" || file === "_templates") {
+    if (file === "README.md" || file === "_templates") {
       continue;
     }
 

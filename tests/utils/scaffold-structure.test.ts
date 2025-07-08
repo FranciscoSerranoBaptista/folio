@@ -64,15 +64,15 @@ describe('scaffold-structure', () => {
       expect(visionReadme?.content).toContain('Vision and Strategy');
     });
 
-    it('should have ADR directory with index.md', () => {
+    it('should have ADR directory with README.md', () => {
       const docsDir = structure.find(node => node.name === 'docs');
       const archDir = docsDir?.children?.find(child => child.name === '02-architecture-and-design');
-      const adrDir = archDir?.children?.find(child => child.name === 'adr');
+      const adrDir = archDir?.children?.find(child => child.name === 'adrs');
       
       expect(adrDir).toBeDefined();
       expect(adrDir?.type).toBe('directory');
       
-      const adrIndex = adrDir?.children?.find(child => child.name === 'index.md');
+      const adrIndex = adrDir?.children?.find(child => child.name === 'README.md');
       expect(adrIndex).toBeDefined();
       expect(adrIndex?.type).toBe('file');
       expect(adrIndex?.content).toContain('Architecture Decision Records');

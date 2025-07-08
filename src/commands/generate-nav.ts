@@ -44,7 +44,6 @@ async function scanDirectory(
       } else if (
         entry.isFile() &&
         (entry.name.endsWith(".md") || entry.name.endsWith(".mdx")) &&
-        entry.name !== "index.md" &&
         entry.name !== "README.md"
       ) {
         try {
@@ -238,7 +237,7 @@ async function generateDirectoryIndexes(
 
   for (const dir of directories) {
     const dirPath = path.join(docsRoot, dir);
-    const indexPath = path.join(dirPath, "index.md");
+    const indexPath = path.join(dirPath, "README.md");
 
     // Get documents in this directory (not subdirectories)
     const dirDocs = allDocuments.filter(

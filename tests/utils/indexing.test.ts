@@ -61,7 +61,7 @@ describe('indexing', () => {
 
       // Verify the index file was created
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
       
       expect(indexContent).toContain('# Index of Adrs');
       expect(indexContent).toContain('No documents found for this type.');
@@ -92,7 +92,7 @@ describe('indexing', () => {
 
       // Verify the index file content
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
 
       expect(indexContent).toContain('| id | title | status |');
       expect(indexContent).toContain('| --- | --- | --- |');
@@ -128,7 +128,7 @@ describe('indexing', () => {
       await updateIndexFile(mockDocTypeConfig, listConfig, configDir);
 
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
 
       expect(indexContent).toContain('- [Test ADR](001-test-adr.md) (Status: proposed)');
       expect(indexContent).not.toContain('| id | title | status |');
@@ -151,7 +151,7 @@ Some footer text.`;
 
       vol.fromJSON({
         '/project/docs/adrs/001-test-adr.md': 'content1',
-        '/project/docs/adrs/index.md': existingContent
+        '/project/docs/adrs/README.md': existingContent
       });
 
       mockMatter.mockReturnValueOnce({
@@ -163,7 +163,7 @@ Some footer text.`;
       await updateIndexFile(mockDocTypeConfig, mockConfig, configDir);
 
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
 
       expect(indexContent).toContain('# My Custom Title');
       expect(indexContent).toContain('Some introduction text.');
@@ -190,7 +190,7 @@ Some footer text.`;
       await updateIndexFile(mockDocTypeConfig, mockConfig, configDir);
 
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
 
       expect(indexContent).toContain('| 1 | [Incomplete ADR](001-incomplete-adr.md) | N/A |');
 
@@ -216,7 +216,7 @@ Some footer text.`;
       await updateIndexFile(mockDocTypeConfig, mockConfig, configDir);
 
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
 
       // Check that documents appear in ID order (1, 2, 3)
       const firstIndex = indexContent.indexOf('[First]');
@@ -229,12 +229,12 @@ Some footer text.`;
       consoleLogSpy.mockRestore();
     });
 
-    it('should filter out index.md from document list', async () => {
+    it('should filter out README.md from document list', async () => {
       const { updateIndexFile } = await import('../../src/utils/indexing');
 
       vol.fromJSON({
         '/project/docs/adrs/001-test.md': 'content1',
-        '/project/docs/adrs/index.md': 'existing index',
+        '/project/docs/adrs/README.md': 'existing index',
         '/project/docs/adrs/002-another.md': 'content2'
       });
 
@@ -269,7 +269,7 @@ Some footer text.`;
       await updateIndexFile(mockDocTypeConfig, mockConfig, configDir);
 
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
 
       expect(indexContent).toContain('[Test MD](001-test.md)');
       expect(indexContent).toContain('[Test MDX](002-another.mdx)');
@@ -290,7 +290,7 @@ Some footer text.`;
       await updateIndexFile(mockDocTypeConfig, mockConfig, configDir);
 
       const fs = await import('node:fs/promises');
-      const indexContent = await fs.readFile('/project/docs/adrs/index.md', 'utf-8');
+      const indexContent = await fs.readFile('/project/docs/adrs/README.md', 'utf-8');
 
       expect(indexContent).toContain('No documents found for this type.');
 
