@@ -31,7 +31,9 @@
         "lint:fix": "biome check --write src",
         "format": "biome format src",
         "format:write": "biome format --write src",
-        "check": "biome check src && npm run typecheck && npm run test:run"
+        "check": "biome check src && npm run typecheck && npm run test:run",
+        "pack": "node scripts/pack.js",
+        "mcp": "node dist/src/index.js serve --api --port 9001"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.1.0",
@@ -46,6 +48,7 @@
         "commander": "^14.0.0",
         "cosmiconfig": "^9.0.0",
         "cosmiconfig-typescript-loader": "^6.1.0",
+        "fastify": "^5.4.0",
         "gray-matter": "^4.0.3",
         "handlebars": "^4.7.8",
         "inquirer": "^12.7.0",

@@ -1,0 +1,26 @@
+# Development files
+src/
+scripts/
+tests/
+coverage/
+dist-packages/
+
+# Configuration files
+tsconfig.json
+vitest.config.ts
+biome.json
+
+# Development artifacts
+test-*.js
+test-*.ts
+*.test.js
+*.test.ts
+*.tmp
+*.temp
+
+# Documentation (use README.md only)
+docs/
+
+# Build artifacts
+*.tgz
+*.tar.gz

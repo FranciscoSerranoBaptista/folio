@@ -1,5 +1,6 @@
 // folio.config.ts
-import { defineConfig } from "folio-cli";
+// Note: After running 'npm install --save-dev folio-cli', you can import defineConfig for better type safety:
+// import { defineConfig } from "folio-cli";
 
 // We can define the generic schema once and reuse it for multiple document types.
 const genericDocFrontmatter = {
@@ -38,7 +39,7 @@ const genericDocFrontmatter = {
 };
 
 // Main configuration export
-export default defineConfig({
+export default {
   root: "docs",
 
   indexing: {
@@ -179,4 +180,4 @@ export default defineConfig({
       },
     },
   },
-});
+};

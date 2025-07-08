@@ -8,6 +8,7 @@ import path from "node:path";
 import { Command } from "commander";
 import matter from "gray-matter";
 import { loadConfig } from "../utils/config-loader";
+import type { FolioConfig } from "../types/folio";
 import log from "../utils/logging";
 
 interface SearchResult {
@@ -29,6 +30,7 @@ async function searchDocuments(
   searchType: "id" | "title" | "content" | "any",
   docsRoot: string,
   configDir: string,
+  config: FolioConfig,
 ): Promise<SearchResult[]> {
   const results: SearchResult[] = [];
   const queryLower = query.toLowerCase();
@@ -47,12 +49,27 @@ async function searchDocuments(
           await scanDirectory(fullPath, type);
         } else if (
           entry.isFile() &&
-          (entry.name.endsWith(".md") || entry.name.endsWith(".mdx"))
+          (entry.name.endsWith(".md") || entry.name.endsWith(".mdx")) &&
+          // Skip common non-document files
+          !entry.name.startsWith("README") &&
+          entry.name !== "index.md" &&
+          entry.name !== "_templates"
         ) {
           try {
             const content = await fs.readFile(fullPath, "utf-8");
+            
+            // Skip template files (contain Handlebars placeholders)
+            if (content.includes("{{") && content.includes("}}")) {
+              continue;
+            }
+            
             const { data, content: bodyContent } = matter(content);
             const relativePath = path.relative(configDir, fullPath);
+
+            // Skip files without proper frontmatter (likely not actual documents)
+            if (!data || Object.keys(data).length === 0) {
+              continue;
+            }
 
             const doc = {
               filename: entry.name,
@@ -69,7 +86,7 @@ async function searchDocuments(
 
             // Check different search criteria
             if (searchType === "id" || searchType === "any") {
-              if (doc.id?.toLowerCase().includes(queryLower)) {
+              if (doc.id && String(doc.id).toLowerCase().includes(queryLower)) {
                 doc.matchReason = `ID: ${doc.id}`;
                 isMatch = true;
               }
@@ -127,7 +144,12 @@ async function searchDocuments(
     }
   }
 
-  await scanDirectory(docsRoot);
+  // Only scan configured document type directories
+  for (const [typeName, typeConfig] of Object.entries(config.types)) {
+    const typeDir = path.join(docsRoot, typeConfig.path);
+    await scanDirectory(typeDir, typeName);
+  }
+  
   return results;
 }
 
@@ -158,6 +180,7 @@ async function handleFind(
       searchType,
       docsRoot,
       configDir,
+      config,
     );
 
     if (results.length === 0) {

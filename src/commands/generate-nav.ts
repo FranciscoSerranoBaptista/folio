@@ -44,12 +44,19 @@ async function scanDirectory(
       } else if (
         entry.isFile() &&
         (entry.name.endsWith(".md") || entry.name.endsWith(".mdx")) &&
-        entry.name !== "index.md"
+        entry.name !== "index.md" &&
+        entry.name !== "README.md"
       ) {
         try {
           const content = await fs.readFile(fullPath, "utf-8");
-          const { data } = matter(content);
+          const { data, content: markdownContent } = matter(content);
           const relativePath = path.relative(rootDir, fullPath);
+
+          // Skip files that are likely just placeholder content (very short)
+          const contentLength = markdownContent.trim().length;
+          if (contentLength < 50) {
+            continue;
+          }
 
           documents.push({
             filename: entry.name,
@@ -98,7 +105,7 @@ async function generateRootReadme(
     docs.sort((a, b) => {
       // Sort by ID if available (for tickets/ADRs), then by title
       if (a.id && b.id) {
-        return a.id.localeCompare(b.id, undefined, { numeric: true });
+        return String(a.id).localeCompare(String(b.id), undefined, { numeric: true });
       }
       return a.title.localeCompare(b.title);
     });
@@ -121,27 +128,21 @@ ${Array.from(documentsByType.keys())
 ### By Directory Structure
 `;
 
-  // Add directory navigation
-  const directories = [
-    "00-vision-and-strategy",
-    "01-product-and-planning",
-    "02-architecture-and-design",
-    "03-engineering",
-    "04-devops-and-infrastructure",
-    "05-operations-and-support",
-    "06-sprint-tickets",
-  ];
+  // Add directory navigation - only for directories that contain documents
+  const existingDirectories = new Set<string>();
+  for (const doc of allDocuments) {
+    const dir = doc.relativePath.split('/')[0];
+    if (dir && dir !== doc.relativePath) {
+      existingDirectories.add(dir);
+    }
+  }
 
-  for (const dir of directories) {
-    const dirPath = path.join(docsRoot, dir);
-    try {
-      await fs.access(dirPath);
-      const dirDocs = allDocuments.filter((doc) =>
-        doc.relativePath.startsWith(dir),
-      );
+  for (const dir of Array.from(existingDirectories).sort()) {
+    const dirDocs = allDocuments.filter((doc) =>
+      doc.relativePath.startsWith(dir + '/'),
+    );
+    if (dirDocs.length > 0) {
       content += `- [📁 ${dir}](./${dir}/) (${dirDocs.length} documents)\n`;
-    } catch {
-      // Directory doesn't exist
     }
   }
 
@@ -226,7 +227,7 @@ async function generateDirectoryIndexes(
 ): Promise<void> {
   const docsRoot = path.join(configDir, config.root);
 
-  // Get all unique directories
+  // Get all unique directories that actually contain documents
   const directories = new Set<string>();
   for (const doc of allDocuments) {
     const dir = path.dirname(doc.relativePath);
@@ -237,19 +238,20 @@ async function generateDirectoryIndexes(
 
   for (const dir of directories) {
     const dirPath = path.join(docsRoot, dir);
-    const indexPath = path.join(dirPath, "README.md");
+    const indexPath = path.join(dirPath, "index.md");
 
-    // Get documents in this directory
+    // Get documents in this directory (not subdirectories)
     const dirDocs = allDocuments.filter(
       (doc) => path.dirname(doc.relativePath) === dir,
     );
 
+    // Only create index if there are actual documents in this directory
     if (dirDocs.length === 0) continue;
 
     // Sort documents
     dirDocs.sort((a, b) => {
       if (a.id && b.id) {
-        return a.id.localeCompare(b.id, undefined, { numeric: true });
+        return String(a.id).localeCompare(String(b.id), undefined, { numeric: true });
       }
       return a.title.localeCompare(b.title);
     });
@@ -325,30 +327,35 @@ export async function handleGenerateNav(): Promise<void> {
       allDocuments.push(...typeDocs);
     }
 
-    // Also scan other directories
-    const otherDirectories = [
-      "00-vision-and-strategy",
-      "01-product-and-planning",
-      "03-engineering",
-      "04-devops-and-infrastructure",
-      "05-operations-and-support",
-      "06-sprint-tickets",
-      "prompts",
-      "schemas",
-    ];
-
-    for (const dir of otherDirectories) {
-      const dirPath = path.join(docsRoot, dir);
-      try {
-        const dirDocs = await scanDirectory(
-          dirPath,
-          docsRoot,
-          path.basename(dir),
-        );
-        allDocuments.push(...dirDocs);
-      } catch {
-        // Directory doesn't exist, skip
+    // Scan for any additional directories that might contain documentation
+    // but aren't defined as document types in the config
+    try {
+      const rootEntries = await fs.readdir(docsRoot, { withFileTypes: true });
+      for (const entry of rootEntries) {
+        if (entry.isDirectory() && !entry.name.startsWith('_')) {
+          const dirPath = path.join(docsRoot, entry.name);
+          
+          // Skip if this directory is already covered by a document type
+          const isTypedDirectory = Object.values(config.types).some(
+            typeConfig => typeConfig.path.startsWith(entry.name)
+          );
+          
+          if (!isTypedDirectory) {
+            try {
+              const dirDocs = await scanDirectory(
+                dirPath,
+                docsRoot,
+                entry.name,
+              );
+              allDocuments.push(...dirDocs);
+            } catch {
+              // Error scanning directory, skip
+            }
+          }
+        }
       }
+    } catch {
+      // Error reading docs root, continue with what we have
     }
 
     log.info(`Found ${allDocuments.length} documents`);

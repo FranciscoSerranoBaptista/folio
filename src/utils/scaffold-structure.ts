@@ -124,7 +124,7 @@ export const structure: ScaffoldNode[] = [
           },
           {
             type: "directory",
-            name: "adr",
+            name: "adrs",
             children: [
               {
                 type: "file",
@@ -267,6 +267,17 @@ export const structure: ScaffoldNode[] = [
             type: "file",
             name: "ticket-frontmatter.schema.yaml",
             content: "# Paste your schema content here",
+          },
+        ],
+      },
+      {
+        type: "directory",
+        name: "_templates",
+        children: [
+          {
+            type: "file",
+            name: "README.md",
+            content: "# Document Templates\n\nThis directory contains Handlebars templates used by `folio new` to create new documents.\n\nTemplates are copied here during `folio init` and can be customized for your project.",
           },
         ],
       },

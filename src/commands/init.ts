@@ -50,7 +50,7 @@ async function copyCoreTemplates(userCwd: string): Promise<void> {
 
   // Define destination paths (in the user's project)
   const destConfigPath = path.join(userCwd, "folio.config.ts");
-  const destTemplatesDir = path.join(userCwd, "templates");
+  const destTemplatesDir = path.join(userCwd, "docs", "_templates");
   const destWorkflowsDir = path.join(userCwd, ".github/workflows");
 
   // 1. Copy the main config file
@@ -65,7 +65,7 @@ async function copyCoreTemplates(userCwd: string): Promise<void> {
     const destination = path.join(destTemplatesDir, template);
     await fs.copyFile(source, destination);
   }
-  log.info(`- Copied markdown templates to: templates/`);
+  log.info(`- Copied markdown templates to: docs/_templates/`);
 
   // 3. Copy GitHub Actions workflows
   try {

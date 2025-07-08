@@ -34,9 +34,9 @@ export async function readTemplateFile(
   templateName: string,
   configDir: string,
 ): Promise<string> {
-  // By convention, user templates are stored in a 'templates' directory
-  // at the same level as the folio.config.ts file.
-  const templatePath = path.join(configDir, "templates", templateName);
+  // By convention, user templates are stored in a '_templates' directory
+  // within the docs directory for better organization.
+  const templatePath = path.join(configDir, "docs", "_templates", templateName);
   try {
     return await fs.readFile(templatePath, "utf-8");
   } catch (error: unknown) {

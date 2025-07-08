@@ -110,13 +110,31 @@ async function validateDocType(
   const files = await fs.readdir(typeDir).catch(() => []);
 
   for (const file of files) {
+    // Skip non-markdown files
     if (!file.endsWith(".md") && !file.endsWith(".mdx")) continue;
-    fileCount++;
+    
+    // Skip common non-document files
+    if (file.startsWith("README") || file === "index.md" || file === "_templates") {
+      continue;
+    }
 
     const filePath = path.join(typeDir, file);
     try {
       const content = await fs.readFile(filePath, "utf-8");
+      
+      // Skip template files (contain Handlebars placeholders)
+      if (content.includes("{{") && content.includes("}}")) {
+        continue;
+      }
+      
       const { data } = matter(content);
+      
+      // Skip files without proper frontmatter (likely not actual documents)
+      if (!data || Object.keys(data).length === 0) {
+        continue;
+      }
+      
+      fileCount++;
       const result = schema.safeParse(data);
 
       if (!result.success) {

@@ -135,6 +135,18 @@ describe('command structure', () => {
       expect(command.description()).toBeDefined();
     });
   });
+
+  describe('generate-prompt command', () => {
+    it('should create properly structured generate-prompt command', async () => {
+      const { createGeneratePromptCommand } = await import('../../src/commands/generate-prompt');
+      
+      const command = createGeneratePromptCommand();
+      
+      expect(command.name()).toBe('generate-prompt');
+      expect(command.description()).toContain('Generate AI system prompts');
+      expect(command._actionHandler).toBeDefined();
+    });
+  });
 });
 
 describe('command integration basics', () => {
@@ -149,7 +161,8 @@ describe('command integration basics', () => {
       import('../../src/commands/find'),
       import('../../src/commands/adr'),
       import('../../src/commands/serve'),
-      import('../../src/commands/generate-nav')
+      import('../../src/commands/generate-nav'),
+      import('../../src/commands/generate-prompt')
     ]);
 
     // Each should export a create function
@@ -162,6 +175,7 @@ describe('command integration basics', () => {
     expect(commands[6].createADRCommand).toBeDefined();
     expect(commands[7].createServeCommand).toBeDefined();
     expect(commands[8].createGenerateNavCommand).toBeDefined();
+    expect(commands[9].createGeneratePromptCommand).toBeDefined();
   });
 
   it('should create all commands successfully', async () => {
@@ -174,6 +188,7 @@ describe('command integration basics', () => {
     const { createADRCommand } = await import('../../src/commands/adr');
     const { createServeCommand } = await import('../../src/commands/serve');
     const { createGenerateNavCommand } = await import('../../src/commands/generate-nav');
+    const { createGeneratePromptCommand } = await import('../../src/commands/generate-prompt');
 
     // All should create without throwing
     expect(() => createInitCommand()).not.toThrow();
@@ -185,6 +200,7 @@ describe('command integration basics', () => {
     expect(() => createADRCommand()).not.toThrow();
     expect(() => createServeCommand()).not.toThrow();
     expect(() => createGenerateNavCommand()).not.toThrow();
+    expect(() => createGeneratePromptCommand()).not.toThrow();
   });
 
   it('should have unique command names', async () => {
@@ -197,7 +213,8 @@ describe('command integration basics', () => {
       (await import('../../src/commands/find')).createFindCommand(),
       (await import('../../src/commands/adr')).createADRCommand(),
       (await import('../../src/commands/serve')).createServeCommand(),
-      (await import('../../src/commands/generate-nav')).createGenerateNavCommand()
+      (await import('../../src/commands/generate-nav')).createGenerateNavCommand(),
+      (await import('../../src/commands/generate-prompt')).createGeneratePromptCommand()
     ];
 
     const names = commands.map(cmd => cmd.name());

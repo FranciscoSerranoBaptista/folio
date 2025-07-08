@@ -1,6 +1,6 @@
 # folio serve
 
-Starts a local development server to preview your documentation with live-reloading and a web-based interface.
+Starts either a local development server to preview your documentation with live-reloading, or a Knowledge API server for programmatic access by AI agents.
 
 ## Usage
 
@@ -13,35 +13,61 @@ folio serve [options]
 | Option | Description |
 |--------|-------------|
 | `-p, --port <port>` | Port to run the server on (default: `3000`) |
-| `-h, --host <host>` | Host to bind to (default: `localhost`) |
-| `--open` | Automatically open browser |
-| `--watch` | Enable file watching and live reload (default: `true`) |
-| `--no-watch` | Disable file watching |
+| `--no-open` | Do not automatically open the browser (preview mode only) |
+| `--api` | Start Knowledge API server instead of preview server |
+
+### Server Modes
+
+**Preview Server (default):**
+- Live-reloading documentation preview
+- Web-based interface for browsing docs
+- Automatic browser opening
+- File watching and hot reload
+
+**Knowledge API Server (`--api`):**
+- REST API for programmatic access
+- Designed for AI agent integration
+- In-memory document indexing
+- Fast querying and filtering
 
 ## Examples
 
-### Start basic server:
+### Preview Server (Default)
 
 ```bash
+# Start preview server on default port 3000
 folio serve
+
+# Custom port without auto-opening browser
+folio serve --port 8080 --no-open
 ```
 
-### Custom port and auto-open:
+### Knowledge API Server
 
 ```bash
-folio serve --port=8080 --open
+# Start Knowledge API for AI integration
+folio serve --api
+
+# API on custom port
+folio serve --api --port 3001
 ```
 
-### Serve on all interfaces:
+The Knowledge API will be available at `http://localhost:PORT` with these endpoints:
+- `GET /api/health` - Server health check
+- `GET /api/documents` - Search and filter documents  
+- `GET /api/documents/:id` - Get specific document
+
+### AI Integration Workflow
 
 ```bash
-folio serve --host=0.0.0.0
-```
+# 1. Start Knowledge API
+folio serve --api --port 3000
 
-### Disable live reload:
+# 2. Generate AI prompt
+folio generate-prompt --provider claude
 
-```bash
-folio serve --no-watch
+# 3. Configure your AI assistant with the generated prompt
+# 4. AI can now query your project knowledge!
 ```
 
 ## Features
@@ -228,6 +254,8 @@ Development server security features:
 
 ## See Also
 
+- [folio generate-prompt](./generate-prompt.md) - Generate AI system prompts
+- [AI Integration Guide](../ai-integration/) - Complete AI integration documentation
+- [Knowledge API Reference](../ai-integration/knowledge-api.md) - API endpoint details
 - [folio validate](./validate.md) - Validate your documentation
-- [folio generate-nav](./generate-nav.md) - Generate navigation
 - [CI/CD Integration](../04-advanced-guides/ci-cd-integration.md) - Deploy documentation
