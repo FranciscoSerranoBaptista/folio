@@ -64,28 +64,28 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Getting Started:
-    - Overview: 01-getting-started/README.md
-    - Installation: 01-getting-started/installation.md
-    - Quick Start: 01-getting-started/quick-start.md
-    - Configuration: 01-getting-started/configuration.md
-  - Product & Planning:
-    - Overview: 01-product-and-planning/README.md
-  - Architecture & Design:
-    - Overview: 02-architecture-and-design/README.md
-    - ADRs: 02-architecture-and-design/adrs/README.md
+    - Installation: 01-getting-started/01-installation.md
+    - Quick Start: 01-getting-started/02-quick-start.md
+  - Core Concepts:
+    - Configuration: 02-core-concepts/01-the-folio-config.md
+    - Templates: 02-core-concepts/02-templates.md
+    - Indexing & Linking: 02-core-concepts/03-indexing-and-linking.md
   - Command Reference:
-    - Overview: 03-command-reference/README.md
     - init: 03-command-reference/init.md
     - new: 03-command-reference/new.md
+    - list: 03-command-reference/list.md
     - validate: 03-command-reference/validate.md
     - find: 03-command-reference/find.md
     - serve: 03-command-reference/serve.md
+    - status: 03-command-reference/status.md
     - generate-nav: 03-command-reference/generate-nav.md
     - generate-prompt: 03-command-reference/generate-prompt.md
     - setup-docs: 03-command-reference/setup-docs.md
     - adr: 03-command-reference/adr.md
   - Advanced Guides:
-    - Overview: 04-advanced-guides/README.md
+    - ADR Workflows: 04-advanced-guides/01-adr-workflows.md
+    - CI/CD Integration: 04-advanced-guides/02-ci-cd-integration.md
+    - LLM Navigation: 04-advanced-guides/03-llm-navigation.md
     - Documentation Websites: 04-advanced-guides/documentation-websites.md
     - MCP Server Setup: 04-advanced-guides/04-mcp-server-setup.md
   - AI Integration:
@@ -94,12 +94,10 @@ nav:
     - AI Prompts: ai-integration/ai-prompts.md
     - Workflows: ai-integration/workflows.md
     - Troubleshooting: ai-integration/troubleshooting.md
-  - DevOps & Infrastructure:
-    - Overview: 04-devops-and-infrastructure/README.md
-  - Operations & Support:
-    - Overview: 05-operations-and-support/README.md
-  - Sprint Tickets:
-    - Overview: 06-sprint-tickets/README.md
+  - Troubleshooting:
+    - FAQ: 05-troubleshooting/faq.md
+  - Examples:
+    - Template Examples: 06-examples/template-examples.md
 
 extra:
   social:
