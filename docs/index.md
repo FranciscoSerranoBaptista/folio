@@ -15,10 +15,10 @@ This documentation will guide you through installing, configuring, and mastering
 ## Where to Start?
 
 -   **New to Folio?** Start with [**Installation**](./01-getting-started/01-installation.md), then follow the [**Quick Start**](./01-getting-started/02-quick-start.md) tutorial.
--   **Want AI integration?** See the [**AI Integration Guide**](./ai-integration/) to make your docs AI-accessible.
+-   **Want AI integration?** See the [**AI Integration Guide**](./ai-integration/README.md) to make your docs AI-accessible.
 -   **Want to configure the tool?** Read the deep dive on [**The Folio Config**](./02-core-concepts/01-the-folio-config.md).
 -   **Looking for a specific command?** Jump to the [**Command Reference**](./03-command-reference/init.md).
--   **Need help with workflows?** Check out the [**Advanced Guides**](./04-advanced-guides/ci-cd-integration.md).
+-   **Need help with workflows?** Check out the [**Advanced Guides**](./04-advanced-guides/02-ci-cd-integration.md).
 -   **Having issues?** See the [**FAQ**](./05-troubleshooting/faq.md) for common solutions.
 
 ## Documentation Structure
@@ -54,7 +54,7 @@ This documentation will guide you through installing, configuring, and mastering
 - [FAQ](./05-troubleshooting/faq.md) - Common questions and solutions
 
 ### 🤖 AI Integration
-- [AI Integration Overview](./ai-integration/) - Transform docs into AI-accessible knowledge
+- [AI Integration Overview](./ai-integration/README.md) - Transform docs into AI-accessible knowledge
 - [Knowledge API](./ai-integration/knowledge-api.md) - REST API for programmatic access
 - [AI System Prompts](./ai-integration/ai-prompts.md) - Generate prompts for AI assistants
 - [Workflow Examples](./ai-integration/workflows.md) - Real-world AI integration patterns

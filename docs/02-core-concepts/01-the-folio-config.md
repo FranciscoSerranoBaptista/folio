@@ -208,5 +208,5 @@ export default defineConfig({
 With your configuration in place, you're ready to:
 
 - [Create your first documents](../03-command-reference/new.md)
-- [Set up validation workflows](../04-advanced-guides/ci-cd-integration.md)
-- [Explore ADR lifecycle management](../04-advanced-guides/adr-workflows.md)
+- [Set up validation workflows](../04-advanced-guides/02-ci-cd-integration.md)
+- [Explore ADR lifecycle management](../04-advanced-guides/01-adr-workflows.md)
