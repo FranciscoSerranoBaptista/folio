@@ -18,6 +18,7 @@ import { createADRCommand } from "./commands/adr";
 import { createFindCommand } from "./commands/find";
 import { createGenerateNavCommand } from "./commands/generate-nav";
 import { createGeneratePromptCommand } from "./commands/generate-prompt";
+import { createSetupDocsCommand } from "./commands/setup-docs";
 // Import command creation functions from their dedicated modules.
 // This keeps the main file clean and focused on orchestration.
 import { createInitCommand } from "./commands/init";
@@ -56,6 +57,7 @@ async function main() {
   program.addCommand(createServeCommand());
   program.addCommand(createGenerateNavCommand());
   program.addCommand(createGeneratePromptCommand());
+  program.addCommand(createSetupDocsCommand());
   program.addCommand(createFindCommand());
   program.addCommand(createADRCommand());
 

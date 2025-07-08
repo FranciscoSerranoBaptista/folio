@@ -1,0 +1,99 @@
+# MkDocs Configuration Template for Folio Projects
+# Copy this file to your project root and customize as needed
+
+site_name: {{project_name}} Documentation
+site_description: {{project_description}}
+site_url: https://{{github_username}}.github.io/{{repository_name}}/
+repo_url: https://github.com/{{github_username}}/{{repository_name}}
+repo_name: {{github_username}}/{{repository_name}}
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.action.edit
+    - content.tabs.link
+
+plugins:
+  - search
+  - awesome-pages:
+      collapse_single_pages: true
+      strict: false
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Standard Folio navigation structure
+# Customize based on your project's needs
+nav:
+  - Home: index.md
+  - Vision & Strategy:
+    - Overview: 00-vision-and-strategy/README.md
+  - Product & Planning:
+    - Overview: 01-product-and-planning/README.md
+    - Epics: 01-product-and-planning/epics/README.md
+    - Features: 01-product-and-planning/features/README.md
+  - Architecture & Design:
+    - Overview: 02-architecture-and-design/README.md
+    - ADRs: 02-architecture-and-design/adrs/README.md
+    - Components: 02-architecture-and-design/component-design/README.md
+  - Engineering:
+    - Overview: 03-engineering/README.md
+    - APIs: 03-engineering/api/README.md
+    - Data Models: 03-engineering/data-model/README.md
+    - Services: 03-engineering/services/README.md
+  - DevOps & Infrastructure:
+    - Overview: 04-devops-and-infrastructure/README.md
+  - Operations & Support:
+    - Overview: 05-operations-and-support/README.md
+  - Sprint Tickets:
+    - Overview: 06-sprint-tickets/README.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/{{github_username}}/{{repository_name}}
+  generator: false
+
+copyright: Copyright &copy; 2024 {{author_name}}
