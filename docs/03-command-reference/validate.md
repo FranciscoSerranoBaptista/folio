@@ -235,4 +235,4 @@ Validation is optimized for large document sets:
 
 - [The Folio Config](../02-core-concepts/01-the-folio-config.md) - Configure validation rules
 - [folio new](./new.md) - Create valid documents from templates
-- [CI/CD Integration](../04-advanced-guides/ci-cd-integration.md) - Automate validation
+- [CI/CD Integration](../04-advanced-guides/02-ci-cd-integration.md) - Automate validation

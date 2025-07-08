@@ -249,5 +249,5 @@ Navigation generation is optimized for:
 ## See Also
 
 - [folio find](./find.md) - Search documents using the generated navigation
-- [LLM Navigation Guide](../04-advanced-guides/llm-navigation.md) - Best practices for LLM accessibility
+- [LLM Navigation Guide](../04-advanced-guides/03-llm-navigation.md) - Best practices for LLM accessibility
 - [folio init](./init.md) - Initial navigation setup

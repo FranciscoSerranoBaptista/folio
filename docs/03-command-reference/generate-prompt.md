@@ -254,7 +254,7 @@ The command automatically analyzes your project to generate context-aware prompt
 
 ## See Also
 
-- [AI Integration Overview](../ai-integration/) - Complete AI integration guide
+- [AI Integration Overview](../ai-integration/README.md) - Complete AI integration guide
 - [Knowledge API Reference](../ai-integration/knowledge-api.md) - API endpoint documentation
 - [Workflow Examples](../ai-integration/workflows.md) - Real-world usage patterns
 - [Troubleshooting](../ai-integration/troubleshooting.md) - Common issues and solutions

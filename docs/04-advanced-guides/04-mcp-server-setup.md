@@ -994,7 +994,7 @@ Adapt the template for your project:
 
 ## See Also
 
-- [AI Integration Overview](../ai-integration/) - Complete AI integration guide
+- [AI Integration Overview](../ai-integration/README.md) - Complete AI integration guide
 - [Knowledge API Reference](../ai-integration/knowledge-api.md) - Detailed API documentation
 - [AI System Prompts](../ai-integration/ai-prompts.md) - Prompt generation guide
 - [Workflow Examples](../ai-integration/workflows.md) - Real-world usage patterns

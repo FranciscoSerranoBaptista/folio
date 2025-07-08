@@ -275,4 +275,4 @@ export default defineConfig({
 
 - [folio status](./status.md) - Update ADR status
 - [folio new](./new.md) - Create new ADRs
-- [ADR Workflows Guide](../04-advanced-guides/adr-workflows.md) - Best practices and workflows
+- [ADR Workflows Guide](../04-advanced-guides/01-adr-workflows.md) - Best practices and workflows

@@ -250,4 +250,4 @@ Search is optimized for:
 
 - [folio list](./list.md) - List documents by type and filters
 - [folio generate-nav](./generate-nav.md) - Generate searchable navigation
-- [LLM Navigation Guide](../04-advanced-guides/llm-navigation.md) - Optimize for AI accessibility
+- [LLM Navigation Guide](../04-advanced-guides/03-llm-navigation.md) - Optimize for AI accessibility

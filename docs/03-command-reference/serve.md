@@ -255,7 +255,7 @@ Development server security features:
 ## See Also
 
 - [folio generate-prompt](./generate-prompt.md) - Generate AI system prompts
-- [AI Integration Guide](../ai-integration/) - Complete AI integration documentation
+- [AI Integration Guide](../ai-integration/README.md) - Complete AI integration documentation
 - [Knowledge API Reference](../ai-integration/knowledge-api.md) - API endpoint details
 - [folio validate](./validate.md) - Validate your documentation
-- [CI/CD Integration](../04-advanced-guides/ci-cd-integration.md) - Deploy documentation
+- [CI/CD Integration](../04-advanced-guides/02-ci-cd-integration.md) - Deploy documentation

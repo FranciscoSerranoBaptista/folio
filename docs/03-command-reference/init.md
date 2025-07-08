@@ -128,4 +128,4 @@ The command will fail if:
 
 - [The Folio Config](../02-core-concepts/01-the-folio-config.md) - Learn how to customize your configuration
 - [folio new](./new.md) - Create your first document
-- [CI/CD Integration](../04-advanced-guides/ci-cd-integration.md) - Set up automated workflows
+- [CI/CD Integration](../04-advanced-guides/02-ci-cd-integration.md) - Set up automated workflows

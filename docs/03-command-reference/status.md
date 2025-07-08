@@ -187,4 +187,4 @@ done
 - [folio list](./list.md) - List documents by status
 - [folio find](./find.md) - Find documents to update
 - [folio validate](./validate.md) - Validate status values
-- [ADR Workflows](../04-advanced-guides/adr-workflows.md) - Learn about ADR lifecycle management
+- [ADR Workflows](../04-advanced-guides/01-adr-workflows.md) - Learn about ADR lifecycle management

@@ -402,4 +402,4 @@ epic: "EPIC-001"
 
 - [folio adr](../03-command-reference/adr.md) - ADR command reference
 - [folio status](../03-command-reference/status.md) - Status management
-- [CI/CD Integration](./ci-cd-integration.md) - Automate ADR workflows
+- [CI/CD Integration](./02-ci-cd-integration.md) - Automate ADR workflows
